@@ -1,0 +1,16 @@
+# Environment
+
+I'd like to do this work in an isolated environment, so that I don't have to worry about conflicting with an actual build of postgres
+
+Side note: I should also have a regular build of postgres setup in an environment that mimics the one I'm developing in
+
+Manage using - Docker
+- I already know it (somewhat)
+
+In terms of build scripts, should I use Make? It feels like the easiest option, and I think I would appreciate learning more of how make works
+
+I think I'd want scripts to:
+  - build the image
+  - build and run initdb
+
+I'm not sure how this would work though. I for sure would need this Makefile to exist outside of the postgres source (because there's already a makefile there). As long as I can cd , or run make in another folder within make I should be fine

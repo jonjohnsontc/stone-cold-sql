@@ -2,9 +2,9 @@
 
 My quest to make a SQL dialect based on Stone Cold's most popular words and phrases. I would like to get this potentially working against Trino, Spark, and Postgres systems. I think it's possible for me to be 'lazy' and only make a lexer/parser for Trino and Spark, since they can connect to postgres (edit: I think it really depends on how Trino and Spark communicate with postgres)
 
-SELECT -> YOU GOT
-JOIN -> WHAT
-COMMIT -> AND THAT'S THE BOTTOM LINE CAUSE STONE COLD SAID SO
+SELECT -> YOU GOT  
+JOIN -> WHAT  
+COMMIT -> AND THAT'S THE BOTTOM LINE CAUSE STONE COLD SAID SO  
 
 ## Definitions
 

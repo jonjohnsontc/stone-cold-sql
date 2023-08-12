@@ -60,3 +60,5 @@ Taking note of the installation process in https://www.postgresql.org/docs/15/ru
           ```
 
         - I wonder if this is unique to WSL, so I'm going to try it on Debian native.
+    - On WSL now, I've modified a number of internally used sql files replacing "SELECT" with "WHAT".
+    - Can get past the error on WSL, but I run into additional errors afterwards, it looks like I need to replace SELECT in more areas of the grammar file
