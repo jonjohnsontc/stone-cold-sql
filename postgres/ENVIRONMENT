@@ -14,3 +14,6 @@ I think I'd want scripts to:
   - build and run initdb
 
 I'm not sure how this would work though. I for sure would need this Makefile to exist outside of the postgres source (because there's already a makefile there). As long as I can cd , or run make in another folder within make I should be fine
+
+## Considering using the same container environment
+

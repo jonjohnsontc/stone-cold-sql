@@ -12,6 +12,28 @@ So far, I've modified the parser file at `gram.y` adding `WHAT` as a `reserved_k
 
 ## Plan
 
+- Create environment
+- Develop Syntax Replacement
+- Create plan for making changes
+- Test Changes
+
+### Syntax Replacement
+
+- Postgres has docs on their key words:
+  - [SQL Syntax Overview](https://www.postgresql.org/docs/current/sql-syntax-lexical.html#SQL-SYNTAX-IDENTIFIERS)
+  - [Appendix C - SQL Key Words](https://www.postgresql.org/docs/current/sql-keywords-appendix.html)
+    - I captured this table in [google docs](https://docs.google.com/spreadsheets/d/1XW2RhBAQzmxkdNBtkhpnLqkRFdJ8s7L3KgDRQqO3hTk/edit?usp=sharing)
+
+- There are reserved and non-reserved key words
+  - reserved key words are never allowed as identifiers
+  - non-reserved key words can (and so aren't really key), but have some predefined meaning in some contexts
+
+- Parser sees things a little more complicated, as there are several classes of key words
+
+#### Should I have multiple words for some key words?
+
+Stone cold promos feature a lot of phrases that would be hard to replicate if I replaced key word for key word. So, I'm thinking about the feasibility of substituting multiple words (not via _), but using whitespace to make it look more natural (and probably less user friendly)
+
 ### Setup
 
 - Will be using a version of postgres pulled directly from the master/main branch
@@ -20,45 +42,12 @@ So far, I've modified the parser file at `gram.y` adding `WHAT` as a `reserved_k
 
 #### Installing Postgres
 
-Taking note of the installation process in https://www.postgresql.org/docs/15/runtime.html.
+Taking note of the installation process in [Chapter 19](https://www.postgresql.org/docs/15/runtime.html).
 
-- docs recommend setting up a postgres user account
-  - only own data that is managed by the server (aka the database)
-  - useradd --comment "for postgres build" --system postgres
-  - with new account run initdb
-    - `$ initdb -D /usr/local/pgsql/data`
-    - postgres user doesn't have access to write to this folder
-      - documentation doesn't seem to have any notes on what to do here, but I'm assuming that I should give the postgres user write access to /usr/local/pgsql/data
-        - After giving postgres user write and execute access to /usr/local/pgsql/, I'm seeing the following error on running initdb:
+##### WSL
 
-          ```log
-          postgres@wendy:~$ /usr/local/pgsql/bin/initdb -D /usr/local/pgsql/data
-          The files belonging to this database system will be owned by user "postgres".
-          This user must also own the server process.
+Building and installing seems to work using WSL by first satisfying all postgres dependencies using the package manager. In debian wsl, I used `apt-get build-dep postgresql` to first satisfy all dependencies, and then I cloned postgres directly from the git repo.
 
-          The database cluster will be initialized with locale "C".
-          The default database encoding has accordingly been set to "SQL_ASCII".
-          The default text search configuration will be set to "english".
+##### Debian Native
 
-          Data page checksums are disabled.
-
-          creating directory /usr/local/pgsql/data ... ok
-          creating subdirectories ... ok
-          selecting dynamic shared memory implementation ... posix
-          selecting default max_connections ... 100
-          selecting default shared_buffers ... 128MB
-          selecting default time zone ... America/Los_Angeles
-          creating configuration files ... ok
-          running bootstrap script ... ok
-          performing post-bootstrap initialization ... 2023-08-07 16:33:03.942 PDT [11408] FATAL:  could not load library "/usr/local/pgsql/lib/dict_snowball.so": /usr/local/pgsql/lib/dict_snowball.so: undefined symbol: CurrentMemoryContext
-          2023-08-07 16:33:03.942 PDT [11408] STATEMENT:  CREATE FUNCTION dsnowball_init(INTERNAL)
-                      RETURNS INTERNAL AS '$libdir/dict_snowball', 'dsnowball_init'
-                  LANGUAGE C STRICT;
-
-          child process exited with exit code 1
-          initdb: removing data directory "/usr/local/pgsql/data"
-          ```
-
-        - I wonder if this is unique to WSL, so I'm going to try it on Debian native.
-    - On WSL now, I've modified a number of internally used sql files replacing "SELECT" with "WHAT".
-    - Can get past the error on WSL, but I run into additional errors afterwards, it looks like I need to replace SELECT in more areas of the grammar file
+I've verified that I can build and install from source on Debian native as well. I haven't used the exact same process as WSL, but I hope to for reproducibility.
